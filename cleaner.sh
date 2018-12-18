@@ -2,11 +2,8 @@
 
 CURRENT_DIRECTORY=`dirname $0`
 BAZAR_DIRECTORY=$CURRENT_DIRECTORY/bazar
-CLEAN_DIRECTORY=$CURRENT_DIRECTORY/bazar_clean
-mkdir -p bazar_clean/divers
-mkdir -p bazar_clean/images
-mkdir -p bazar_clean/videos
 
+mkdir -p bazar_clean/divers bazar_clean/images bazar_clean/videos
 DIR_DIV="bazar_clean/divers"
 DIR_IMG="bazar_clean/images"
 DIR_VID="bazar_clean/videos"
