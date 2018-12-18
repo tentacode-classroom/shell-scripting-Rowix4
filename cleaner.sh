@@ -1,5 +1,8 @@
 #!/bin/bash
 
+CURRENT_DIRECTORY=`dirname $0`
+BAZAR_DIRECTORY=$CURRENT_DIRECTORY/bazar
+CLEAN_DIRECTORY=$CURRENT_DIRECTORY/bazar_clean
 mkdir -p bazar_clean/divers
 mkdir -p bazar_clean/images
 mkdir -p bazar_clean/videos
@@ -8,26 +11,26 @@ DIR_DIV="bazar_clean/divers"
 DIR_IMG="bazar_clean/images"
 DIR_VID="bazar_clean/videos"
 
-FILES=`find $1 -type f`
+FILES=`find $BAZAR_DIRECTORY -type f`
 
 for file in $FILES
 do
-	if file "$file" | grep 'image data'
+	file $file | grep 'image data' > /dev/null
+	VAR_IF_IMG=$?
+	
+	file $file | grep 'ISO Media' > /dev/null
+	VAR_IF_MEDIA=$?
+	
+	if [ $VAR_IF_IMG = 0 ]
 	then
-		YEAR=`stat -t %Y $file | cut -d ' ' -f 9 | sed s/\"//g`
-		if [ ! -d bazar_clean/images/$YEAR ]
-		then
-			mkdir bazar_clean/images/$YEAR
-		fi
-		
-		MONTH=`stat -t %m $file | cut -d ' ' -f 9 | sed s/\"//g`
-		if [ ! -d bazar_clean/images/$YEAR/$MONTH ]
-		then
-			mkdir bazar_clean/images/$YEAR/$MONTH
-		fi
-		
-		FILENAME=`echo "$file" | sed "s/.*\///"`
-		cp $file bazar_clean/images/$YEAR/$MONTH/$FILENAME
-		echo "$file rangé !"
+		cp $file $DIR_IMG
+		echo "$file rangé dans le dossier $DIR_IMG"
+	elif [ $VAR_IF_MEDIA = 0 ]
+	then
+		cp $file $DIR_VID
+		echo "$file rangé dans le dossier $DIR_VID"
+	else
+		cp $file $DIR_DIV
+		echo "$file rangé dans le dossier $DIR_DIV"
 	fi
 done
